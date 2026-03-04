@@ -1,0 +1,23 @@
+[Agent :: Coder]
+@model -> "llama-3.1-8b-instant"
+@temp  -> 0.2
+
+[Agent :: Critic]
+@model -> "llama-3.1-8b-instant"
+@temp  -> 0.7
+
+[Prompt :: CoderRules]
+>> "You are a Python developer. Write exactly one Python script."
+>> "Your task is: " $task
+>> "Return ONLY the code wrapped in ```python tags. No explanations."
+
+[Prompt :: CriticRules]
+>> "You are a senior QA engineer. Read the following terminal output."
+>> "If it says [EXECUTION SUCCESS], briefly explain what the code did."
+>> "If it says [EXECUTION FAILED], explain exactly why it crashed and how to fix it."
+
+// The Execution DAG (Directed Acyclic Graph)
+UserStream |> CoderRules |> Coder |> SystemShell |> ?{
+    "[EXECUTION SUCCESS]" -> FileOut |> TerminalOut
+    "[EXECUTION FAILED - TRACEBACK]" -> CriticRules |> Critic |> TerminalOut
+}

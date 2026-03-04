@@ -1,0 +1,11 @@
+# Cache and Logs
+.aion_cache/
+__pycache__/
+
+# Installer Artifacts
+*.vsix
+aion-language/
+
+# Virtual Environments
+venv/
+env/

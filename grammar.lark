@@ -1,0 +1,19 @@
+grammar = """
+start: model_def
+
+// A model definition now expects the word "model", a name, and a block of properties
+model_def: "model" CNAME "{" property* "}"
+
+// A property is a key-value pair, optionally followed by a comma
+property: CNAME ":" value ","?
+
+// A value can be a string or a number
+value: STRING | SIGNED_NUMBER
+
+// Built-in Lark terminals we need
+%import common.CNAME
+%import common.ESCAPED_STRING -> STRING
+%import common.SIGNED_NUMBER
+%import common.WS
+%ignore WS
+"""
