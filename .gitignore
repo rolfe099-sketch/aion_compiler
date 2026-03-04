@@ -3,7 +3,6 @@
 __pycache__/
 
 # Installer Artifacts
-*.vsix
 aion-language/
 
 # Virtual Environments
